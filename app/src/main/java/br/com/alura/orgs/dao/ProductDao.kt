@@ -1,22 +1,21 @@
 package br.com.alura.orgs.dao
 
-import br.com.alura.orgs.R
-import br.com.alura.orgs.model.Produto
+import br.com.alura.orgs.model.Product
 import java.math.BigDecimal
 
-class ProdutosDao {
+class ProductDAO {
 
-    fun adiciona(produto: Produto){
-        produtos.add(produto)
+    fun addProduct(product: Product){
+        products.add(product)
     }
 
-    fun buscaTodos() : List<Produto> {
-        return produtos.toList()
+    fun getAll() : List<Product> {
+        return products.toList()
     }
 
     companion object {
-        private val produtos = mutableListOf<Produto>(
-            Produto(
+        private val products = mutableListOf<Product>(
+            Product(
                 "Salada de Frutas",
                 "Com frutas frescas",
                 BigDecimal(20),

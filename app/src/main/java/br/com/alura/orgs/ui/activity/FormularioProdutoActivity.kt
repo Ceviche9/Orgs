@@ -1,16 +1,13 @@
 package br.com.alura.orgs.ui.activity
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import br.com.alura.orgs.R
-import br.com.alura.orgs.dao.ProdutosDao
+import br.com.alura.orgs.dao.ProductDAO
 import br.com.alura.orgs.databinding.ActivityFormularioProdutoBinding
 import br.com.alura.orgs.databinding.FormularioImagemBinding
 import br.com.alura.orgs.extentions.tryLoadImage
-import br.com.alura.orgs.model.Produto
-import coil.load
+import br.com.alura.orgs.model.Product
 import java.math.BigDecimal
 
 class FormularioProdutoActivity : AppCompatActivity() {
@@ -25,16 +22,16 @@ class FormularioProdutoActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraBotaoSalvar()
         binding.formularioProdutoImagem.setOnClickListener{
-            val bindingFormularioImagem = FormularioImagemBinding.inflate(layoutInflater)
-            bindingFormularioImagem.formularioImagemBotaoCarregar.setOnClickListener {
-                val url = bindingFormularioImagem.formularioImagemUrl.text.toString()
-                bindingFormularioImagem.activityFormularioProdutoImagem.tryLoadImage(url)
+            val bindingFormImage = FormularioImagemBinding.inflate(layoutInflater)
+            bindingFormImage.formularioImagemBotaoCarregar.setOnClickListener {
+                val url = bindingFormImage.formularioImagemUrl.text.toString()
+                bindingFormImage.activityFormularioProdutoImagem.tryLoadImage(url)
             }
 
             AlertDialog.Builder(this)
-                .setView(bindingFormularioImagem.root)
+                .setView(bindingFormImage.root)
                 .setPositiveButton("Confirmar") {_, _ ->
-                    imageUrl = bindingFormularioImagem.formularioImagemUrl.text.toString()
+                    imageUrl = bindingFormImage.formularioImagemUrl.text.toString()
                     binding.formularioProdutoImagem.tryLoadImage(imageUrl)
                 }
                 .setNegativeButton("Cancelar") {_, _ ->
@@ -46,15 +43,15 @@ class FormularioProdutoActivity : AppCompatActivity() {
 
     private fun configuraBotaoSalvar() {
         val botaoSalvar = binding.activityFormularioProdutoBotaoSalvar
-        val dao = ProdutosDao()
+        val dao = ProductDAO()
         botaoSalvar.setOnClickListener {
             val produtoNovo = criaProduto()
-            dao.adiciona(produtoNovo)
+            dao.addProduct(produtoNovo)
             finish()
         }
     }
 
-    private fun criaProduto(): Produto {
+    private fun criaProduto(): Product {
         val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
         val campoDescricao = binding.activityFormularioProdutoDescricao
@@ -67,11 +64,11 @@ class FormularioProdutoActivity : AppCompatActivity() {
             BigDecimal(valorEmTexto)
         }
 
-        return Produto(
-            nome = nome,
-            descricao = descricao,
-            valor = valor,
-            imagem = imageUrl
+        return Product(
+            name = nome,
+            description = descricao,
+            value = valor,
+            image = imageUrl
         )
     }
 }

@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.ProdutoItemBinding
 import br.com.alura.orgs.extentions.tryLoadImage
-import br.com.alura.orgs.model.Produto
-import coil.load
+import br.com.alura.orgs.model.Product
 import java.text.NumberFormat
 import java.util.*
 
 class ListaProdutosAdapter(
     private val context: Context,
-    produtos: List<Produto>
+    produtos: List<Product>
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHolder>() {
 
     private val produtos = produtos.toMutableList()
@@ -23,18 +21,18 @@ class ListaProdutosAdapter(
     class ViewHolder(private val binding: ProdutoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun vincula(produto: Produto) {
+        fun vincula(produto: Product) {
             val nome = binding.produtoItemNome
-            nome.text = produto.nome
+            nome.text = produto.name
             val descricao = binding.produtoItemDescricao
-            descricao.text = produto.descricao
+            descricao.text = produto.description
             val valor = binding.produtoItemValor
             val formatador: NumberFormat = NumberFormat
                 .getCurrencyInstance(Locale("pt", "BR"))
-            val valorFormatado: String = formatador.format(produto.valor)
+            val valorFormatado: String = formatador.format(produto.value)
             valor.text = valorFormatado
 
-           val viewVisibility = if(produto.imagem != null) {
+           val viewVisibility = if(produto.image != null) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -42,7 +40,7 @@ class ListaProdutosAdapter(
 
             binding.imageView.visibility = viewVisibility
 
-            binding.imageView.tryLoadImage(produto.imagem)
+            binding.imageView.tryLoadImage(produto.image)
         }
 
     }
@@ -60,7 +58,7 @@ class ListaProdutosAdapter(
 
     override fun getItemCount(): Int = produtos.size
 
-    fun atualiza(produtos: List<Produto>) {
+    fun atualiza(produtos: List<Product>) {
         this.produtos.clear()
         this.produtos.addAll(produtos)
         notifyDataSetChanged()
