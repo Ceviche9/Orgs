@@ -10,7 +10,7 @@ import br.com.alura.orgs.ui.recyclerview.adapter.ListaProdutosAdapter
 class ListaProdutosActivity : AppCompatActivity() {
 
     private val dao = ProductDAO()
-    private val adapter = ListaProdutosAdapter(context = this, produtos = dao.getAll())
+    private val adapter = ListaProdutosAdapter(context = this, products = dao.getAll())
     private val binding by lazy {
         ActivityListaProdutosActivityBinding.inflate(layoutInflater)
     }
@@ -20,11 +20,12 @@ class ListaProdutosActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraRecyclerView()
         configuraFab()
+
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.getAll())
+        adapter.update(dao.getAll())
     }
 
     private fun configuraFab() {
@@ -34,7 +35,7 @@ class ListaProdutosActivity : AppCompatActivity() {
         }
     }
 
-     private fun vaiParaFormularioProduto() {
+    private fun vaiParaFormularioProduto() {
         val intent = Intent(this, FormularioProdutoActivity::class.java)
         startActivity(intent)
     }
@@ -42,6 +43,15 @@ class ListaProdutosActivity : AppCompatActivity() {
     private fun configuraRecyclerView() {
         val recyclerView = binding.activityListaProdutosRecyclerView
         recyclerView.adapter = adapter
+        adapter.onItemClick = {
+            val intent = Intent(
+                this,
+                ProductsDetailActivity::class.java
+            ).apply {
+                putExtra(PRODUCT_KEY, it)
+            }
+            startActivity(intent)
+        }
     }
 
 }
